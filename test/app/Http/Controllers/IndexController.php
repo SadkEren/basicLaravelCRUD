@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
+
+
+
+
+
+
     public function getIndex()
     {
         //$book = Book::find(1);//çekeceğim tablodaki 1. stünü.
@@ -20,7 +26,7 @@ class IndexController extends Controller
         return view('index',array('book'=>$book));
     }
 
-    public function postBook(Request $request)
+    public function postBook(Request $request) // aynı zaman da update fonksiyonunda bunun içinde yaptım.
     {
         $validateData = $request->validate(    //gelen verilkeri alıp validatrre ile kontrol ettiriyorum
             [
@@ -52,18 +58,87 @@ class IndexController extends Controller
 
     }
 
+
     public function getBookEdit(int $id)
     {
 
-        $book = Book::all(); //get()
+        $book = Book::all();
 
-        $book = Book::where('id',$id)->first();
+        $bookk = Book::where('id',$id)->first();
 
-        return view('index',array('book'=>$book,'firstBook'=>$book));
+        return view('index',array('book'=>$book,'firstBook'=>$bookk)); //1. olan slect işlemi için ikinci olan ise edit oalrka yolladığımız.
+
+    }
+
+    public function postBookEdit(Request $request )
+    {
+
+        $validateData = $request->validate(    //gelen verilkeri alıp validatrre ile kontrol ettiriyorum
+            [
+                'name' => 'required|string',
+                'book_code' => 'required|integer',
+                'author' => 'required|string',
+                'book_id' => 'required|integer'
+            ]
+        );
+
+        //$edit = Book::find($request->book_id);
+
+        $dit =Book::where('id',$request->book_id,)->update([
+            'name'=>$request->name,
+            'book_code'=>$request->book_code,
+            'author'=>$request->author
+        ]);
+
+
+        return back();
+
+    }
+
+
+
+
+
+    //_______________________________________
+
+    public function yolla()
+    {
+        $cek = Book::all();
+
+        return  view('ekle',array('git'=>$cek)); // 'git'-> blade sayfasında çakırlacak değişkendir.
+    }
+
+
+
+    public function ekle(Request $request)
+    {
+        $veriDogrulama = $request->validate([
+            'name' => 'required|string',
+            'book_code' => 'required|integer',
+            'author' => 'required|string',
+        ]);
+
+        $yeniBook = new Book([
+            'name' => $request->name,
+            'book_code' => $request->book_code,
+            'author' => $request->author,
+        ]);
+
+        $yeniBook->save();
+
+        return back();
+
+    }
+
+
+
+    public function edit($id)
+    {
 
 
 
     }
+
 
 
 }

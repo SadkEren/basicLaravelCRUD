@@ -20,4 +20,20 @@ Route::post('book/store',[IndexController::class, 'postBook'])->name('post_book'
 
 Route::get('book/delete/{id}' ,[IndexController::class, 'bookDelete'])->name('bookDelete');
 
-Route::get('book/edit/{id}', [IndexController::class, 'getBookEdit'])->name('getBookEdit');
+Route::get('book/edit/{id}', [IndexController::class, 'getBookEdit'])->name('get_BookEdit');
+
+Route::post('book/edit', [IndexController::class, 'postBookEdit'])->name('postBookEdit');
+
+
+
+// Route::get('ekle', function(){
+//     return view('ekle');
+// });
+
+Route::get('/ekle',[IndexController::class, 'yolla'])->name('');
+
+Route::post('ekle/kitap',[IndexController::class, 'ekle']);
+
+Route::get('/edit/{id}',[IndexController::class, 'edit']);
+
+Route::resource('user', UserController::class);
