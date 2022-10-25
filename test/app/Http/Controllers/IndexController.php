@@ -9,10 +9,6 @@ class IndexController extends Controller
 {
 
 
-
-
-
-
     public function getIndex()
     {
         //$book = Book::find(1);//çekeceğim tablodaki 1. stünü.
@@ -40,7 +36,7 @@ class IndexController extends Controller
 
         $book = new Book();
 
-        $book->name = $request->name ;  // book a nam ekle . Veri request den gelecek.
+        $book->name = $request->name ;  // book a name ekle . Veri request den gelecek.
         $book->book_code = $request->book_code;
         $book->author = $request->author;
 
@@ -66,14 +62,14 @@ class IndexController extends Controller
 
         $bookk = Book::where('id',$id)->first();
 
-        return view('index',array('book'=>$book,'firstBook'=>$bookk)); //1. olan slect işlemi için ikinci olan ise edit oalrka yolladığımız.
+        return view('index',array('book'=>$book,'firstBook'=>$bookk)); //1. olan select işlemi için ikinci olan ise edit olarak yolladığımız.
 
     }
 
     public function postBookEdit(Request $request )
     {
 
-        $validateData = $request->validate(    //gelen verilkeri alıp validatrre ile kontrol ettiriyorum
+        $validateData = $request->validate(    //gelen verilkeri alıp validate ile kontrol ettiriyorum
             [
                 'name' => 'required|string',
                 'book_code' => 'required|integer',
@@ -105,7 +101,7 @@ class IndexController extends Controller
     {
         $cek = Book::all();
 
-        return  view('ekle',array('git'=>$cek)); // 'git'-> blade sayfasında çakırlacak değişkendir.
+        return  view('ekle',array('git'=>$cek)); // 'git'-> blade sayfasında yazdırılan değişkendir.
     }
 
 
@@ -132,13 +128,42 @@ class IndexController extends Controller
 
 
 
-    public function edit($id)
+    public function edit(int $id)
     {
+        $duzen = Book::where('id',$id)->first();
 
-
+        return view('edit',array('duzen'=>$duzen));
 
     }
 
+    public function postEdit(Request $request)
+    {
+        $veriDogrulama = $request->validate([
+            'name' => 'required|string',
+            'book_code' => 'required|integer',
+            'author' => 'required|string',
+            'book_id' =>'required|integer'
+        ]);
+
+        $yeniBook = Book::where('id',$request->book_id)->update([
+
+            'name' => $request->name,
+            'book_code' => $request->book_code,
+            'author' => $request->author
+        ]);
+
+        //$yeniBook->save();
+
+        return back();
+
+    }
+
+
+    public function sil($id)
+    {
+        Book::where('id',$id)->delete();
+        return back();
+    }
 
 
 }

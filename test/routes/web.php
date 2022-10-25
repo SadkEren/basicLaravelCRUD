@@ -32,8 +32,10 @@ Route::post('book/edit', [IndexController::class, 'postBookEdit'])->name('postBo
 
 Route::get('/ekle',[IndexController::class, 'yolla'])->name('');
 
-Route::post('ekle/kitap',[IndexController::class, 'ekle']);
+Route::post('ekle/kitap',[IndexController::class, 'ekle'])->name('ekle');
 
-Route::get('/edit/{id}',[IndexController::class, 'edit']);
+Route::get('edit/{id}',[IndexController::class, 'edit'])->name('edit');
+
+Route::get('sil/{id}',[IndexController::class, 'sil'])->name('sil');
 
 Route::resource('user', UserController::class);
